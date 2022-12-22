@@ -1,0 +1,11 @@
+C:\_Projects\ChromeVehicleDescriptions\ChromeVehicleDescriptions\bin\Debug\ChromeVehicleDescriptions.exe.config
+C:\_Projects\ChromeVehicleDescriptions\ChromeVehicleDescriptions\bin\Debug\ChromeVehicleDescriptions.exe
+C:\_Projects\ChromeVehicleDescriptions\ChromeVehicleDescriptions\bin\Debug\ChromeVehicleDescriptions.pdb
+C:\_Projects\ChromeVehicleDescriptions\ChromeVehicleDescriptions\bin\Debug\DapperORM.dll
+C:\_Projects\ChromeVehicleDescriptions\ChromeVehicleDescriptions\bin\Debug\Newtonsoft.Json.dll
+C:\_Projects\ChromeVehicleDescriptions\ChromeVehicleDescriptions\bin\Debug\System.Net.Http.Formatting.dll
+C:\_Projects\ChromeVehicleDescriptions\ChromeVehicleDescriptions\bin\Debug\Newtonsoft.Json.xml
+C:\_Projects\ChromeVehicleDescriptions\ChromeVehicleDescriptions\bin\Debug\System.Net.Http.Formatting.xml
+C:\_Projects\ChromeVehicleDescriptions\ChromeVehicleDescriptions\obj\Debug\ChromeVehicleDescriptions.csprojResolveAssemblyReference.cache
+C:\_Projects\ChromeVehicleDescriptions\ChromeVehicleDescriptions\obj\Debug\ChromeVehicleDescriptions.exe
+C:\_Projects\ChromeVehicleDescriptions\ChromeVehicleDescriptions\obj\Debug\ChromeVehicleDescriptions.pdb
