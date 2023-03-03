@@ -50,6 +50,7 @@ namespace ChromeVehicleDescriptions.Models
 		public decimal VehiclePrice { get; set; }
         public string OptionsApprovedBy { get; set; }
         public DateTime OptionsApprovedDate { get; set; }
+        public string VehicleLocation { get; set; }
     }
 
     public class StyleData

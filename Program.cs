@@ -26,12 +26,13 @@ namespace ChromeVehicleDescriptions
                     if (vehicleId == 0)
                     {
                         var vehicleDescription = ChromeVehicleDescriptions.Business.APIHelper.GetVehicleDescription(vehicle.VIN);
-                        AddVehicle(vehicleDescription, vehicle.StockNumber, vehicle.XrefId);
+                        AddVehicle(vehicleDescription, vehicle.StockNumber, vehicle.XrefId, vehicle.Condition);
                     }
                 }
 
                 //var vehicleDescription = ChromeVehicleDescriptions.Business.APIHelper.GetVehicleDescription("1G6AU5S8XE0143881");
                 //AddVehicle(vehicleDescription, "MV43881", "1G6AU5S8XE0143881");
+                var success = SQLQueries.UpdateVehicleTable();
 
             }
             catch (Exception ex)
@@ -40,18 +41,18 @@ namespace ChromeVehicleDescriptions
             }
         }
 
-        public static void AddVehicle(ChromeVehicleDescriptionModel vehicleDescription, string stockNumber, string xrefId)
+        public static void AddVehicle(ChromeVehicleDescriptionModel vehicleDescription, string stockNumber, string xrefId, string condition)
         {
-            var vehicleData = MapVehicleData(vehicleDescription, stockNumber, xrefId);
+            var vehicleData = MapVehicleData(vehicleDescription, stockNumber, xrefId, condition);
 
 
         }
 
-        public static VehicleDataModel MapVehicleData(ChromeVehicleDescriptionModel vehicleDescription, string stockNumber, string xrefId)
+        public static VehicleDataModel MapVehicleData(ChromeVehicleDescriptionModel vehicleDescription, string stockNumber, string xrefId, string condition)
         {
             var vehicleDataModel = new VehicleDataModel();
-            
-            if(vehicleDescription.result != null)
+
+            if (vehicleDescription.result != null)
             {
                 var styleData = new StyleData();
                 var vehicleData = new VehicleData();
@@ -63,7 +64,7 @@ namespace ChromeVehicleDescriptions
                 {
                     try
                     {
-                         
+
                         var styleDescription = vehicleDescription.result.vehicles.First();
 
                         styleData.BaseMSRP = styleDescription.baseMSRP;
@@ -99,12 +100,59 @@ namespace ChromeVehicleDescriptions
                         var x = ex.Message;
                     }
                 }
-
-                //MAP AND ADD EXTERIOR COLOR
-                if(vehicleDescription.result.exteriorColors != null && vehicleDescription.result.exteriorColors.Count() > 0)
+                else if (vehicleDescription.result.vehicles != null && vehicleDescription.result.vehicles.Count() > 1)
                 {
                     try
-                    { 
+                    {
+                        foreach (var styleDescription in vehicleDescription.result.vehicles)
+                        {
+
+                            styleData.BaseMSRP = styleDescription.baseMSRP;
+                            styleData.BodyType = styleDescription.bodyType;
+                            styleData.Country = styleDescription.country;
+                            styleData.DestinationCharge = styleDescription.destinationCharge;
+                            styleData.Doors = styleDescription.doors;
+                            styleData.DriveType = styleDescription.driveType;
+                            styleData.MFRModelCode = styleDescription.mfrModelCode;
+                            if (styleDescription.segment != null && styleDescription.segment.Length > 0)
+                            {
+                                styleData.Segment = styleDescription.segment[0];
+                            }
+                            styleData.StandardCurbWeight = styleDescription.standardCurbWeight;
+                            styleData.StandardGVWR = styleDescription.standardGVWR;
+                            styleData.StandardTowingCapacity = styleDescription.standardTowingCapacity;
+                            styleData.StyleDescription = styleDescription.styleDescription;
+                            styleData.StyleId = styleDescription.styleId;
+                            styleData.Trim = styleDescription.trim;
+                            styleData.Wheelbase = styleDescription.wheelbase;
+
+                            //SQLQueries.AddStyle(styleData);
+
+                            //Check to see if the style exists
+                            if (!SQLQueries.CheckStyle(styleData.StyleId))
+                            {
+                                // Style does not exist, add it
+                                SQLQueries.AddStyle(styleData);
+                            }
+                        }
+
+                        //We don't know which one, so reset this
+
+                        styleData = new StyleData();
+
+                    }
+                    catch (Exception ex)
+                    {
+                        var x = ex.Message;
+                    }
+                }
+                if (styleData.StyleId > 0)
+                { 
+                //MAP AND ADD EXTERIOR COLOR
+                if (vehicleDescription.result.exteriorColors != null && vehicleDescription.result.exteriorColors.Count() > 0)
+                {
+                    try
+                    {
                         exteriorColorData.ColorCode = vehicleDescription.result.exteriorColors.First().colorCode;
                         exteriorColorData.Description = vehicleDescription.result.exteriorColors.First().description;
                         exteriorColorData.GenericDescription = vehicleDescription.result.exteriorColors.First().genericDesc;
@@ -116,7 +164,7 @@ namespace ChromeVehicleDescriptions
                         {
                             exteriorColorData.StyleId = vehicleDescription.result.exteriorColors.First().styles[0];
                         }
-                    
+
                         exteriorColorData.Type = vehicleDescription.result.exteriorColors.First().type;
 
                         vehicleData.ExteriorColorId = SQLQueries.AddExteriorColor(exteriorColorData);
@@ -140,7 +188,7 @@ namespace ChromeVehicleDescriptions
                 if (vehicleDescription.result.interiorColors != null && vehicleDescription.result.interiorColors.Count() > 0)
                 {
                     try
-                    { 
+                    {
                         interiorColorData.ColorCode = vehicleDescription.result.interiorColors.First().colorCode;
                         interiorColorData.Description = vehicleDescription.result.interiorColors.First().description;
                         interiorColorData.GenericDescription = vehicleDescription.result.interiorColors.First().genericDesc;
@@ -171,7 +219,7 @@ namespace ChromeVehicleDescriptions
 
                 //MAP AND ADD VEHICLE
                 try
-                { 
+                {
                     if (vehicleDescription.result.buildDate.ToShortDateString() == "1/1/0001")
                     {
                         vehicleData.BuildDate = new DateTime(1900, 1, 1);
@@ -180,7 +228,7 @@ namespace ChromeVehicleDescriptions
                     {
                         vehicleData.BuildDate = vehicleDescription.result.buildDate;
                     }
-                
+
                     vehicleData.BuildMSRP = vehicleDescription.result.buildMSRP;
                     vehicleData.BuildSource = vehicleDescription.result.buildSource;
                     vehicleData.Country = vehicleDescription.result.wmiCountry;
@@ -192,11 +240,15 @@ namespace ChromeVehicleDescriptions
                     vehicleData.ModelId = vehicleDescription.result.modelID;
                     vehicleData.Source = vehicleDescription.result.source;
                     vehicleData.StockNumber = stockNumber;
+                    vehicleData.Condition = condition;
                     vehicleData.StyleId = styleData.StyleId;
                     vehicleData.VIN = vehicleDescription.result.vinProcessed;
                     vehicleData.XrefId = xrefId;
                     vehicleData.Year = vehicleDescription.result.year;
                     vehicleData.DateUpdated = DateTime.Now;
+
+                    vehicleData.CertificationLevel = "";
+                    vehicleData.CertificationLevelCode = "";
 
                     vehicleData.ManagerSpecialEndDate = new DateTime(1900, 1, 1);
                     vehicleData.ManagerSpecialStartDate = new DateTime(1900, 1, 1);
@@ -222,19 +274,19 @@ namespace ChromeVehicleDescriptions
                 //MAP AND ADD FEATURES
                 if ((vehicleDescription.result.features != null && vehicleDescription.result.features.Count() > 0))
                 {
-                    foreach(var feature in vehicleDescription.result.features)
+                    foreach (var feature in vehicleDescription.result.features)
                     {
                         try
-                        { 
+                        {
                             var featureData = new FeatureData();
 
-                            if(feature.benefitStatement != null && feature.benefitStatement.Count() > 0)
+                            if (feature.benefitStatement != null && feature.benefitStatement.Count() > 0)
                             {
                                 featureData.BenefitDefinition = feature.benefitStatement.First().definition;
                                 featureData.BenefitStatement = feature.benefitStatement.First().statement;
                                 featureData.BenefitTitle = feature.benefitStatement.First().title;
                             }
-                                                 
+
                             featureData.Description = feature.description;
                             featureData.FeatureId = feature.id;
                             featureData.Key = feature.key;
@@ -277,9 +329,9 @@ namespace ChromeVehicleDescriptions
                     foreach (var package in vehicleDescription.result.packages)
                     {
                         try
-                        { 
+                        {
                             var packageData = new PackageData();
-                        
+
                             packageData.Description = package.description;
                             packageData.Key = package.key;
                             packageData.PackageId = package.id;
@@ -329,7 +381,7 @@ namespace ChromeVehicleDescriptions
                 }
 
                 //MAP AND ADD OPTIONS
-                if (vehicleDescription.result.optionCodes != null && vehicleDescription.result.optionCodes.Count() > 0)
+                if (vehicleDescription.result.optionCodeContent != null && vehicleDescription.result.optionCodeContent.Count() > 0)
                 {
                     //foreach(var option in vehicleDescription.result.optionCodes)
                     //{
@@ -338,10 +390,10 @@ namespace ChromeVehicleDescriptions
 
                     //}
 
-                    foreach(var optionContent in vehicleDescription.result.optionCodeContent)
+                    foreach (var optionContent in vehicleDescription.result.optionCodeContent)
                     {
                         try
-                        { 
+                        {
                             var optionData = new OptionData();
 
                             optionData.StyleId = vehicleData.StyleId;
@@ -349,6 +401,39 @@ namespace ChromeVehicleDescriptions
                             optionData.MSRP = optionContent.msrp;
                             optionData.OptionCode = optionContent.optionCode;
                             optionData.OptionDescription = optionContent.optionDescription;
+
+                            var showOption = 1;
+                            if (vehicleData.Condition.ToUpper() == "USED")
+                            {
+                                if (optionData.OptionDescription.ToLower().Contains("first aid"))
+                                {
+                                    showOption = 0;
+                                }
+                                if (optionData.OptionDescription.ToLower().Contains("cargo net"))
+                                {
+                                    showOption = 0;
+                                }
+                                if (optionData.OptionDescription.ToLower().Contains("cargo tray"))
+                                {
+                                    showOption = 0;
+                                }
+                                if (optionData.OptionDescription.ToLower().Contains("cargo mat"))
+                                {
+                                    showOption = 0;
+                                }
+                                if (optionData.OptionDescription.ToLower().Contains("floor mat"))
+                                {
+                                    showOption = 0;
+                                }
+                                if (optionData.OptionDescription.ToLower().Contains("floormat"))
+                                {
+                                    showOption = 0;
+                                }
+                                if (optionData.OptionDescription.ToLower().Contains("floor liner"))
+                                {
+                                    showOption = 0;
+                                }
+                            }
 
                             // Check to see if the feature exists
                             var optionId = SQLQueries.CheckOption(optionData.OptionCode, optionData.StyleId);
@@ -360,7 +445,7 @@ namespace ChromeVehicleDescriptions
                                 optionData.Id = SQLQueries.AddOption(optionData);
                             }
 
-                            SQLQueries.AddVehicleOptionMapping(vehicleData.Id, optionData.Id);
+                            SQLQueries.AddVehicleOptionMapping(vehicleData.Id, optionData.Id, showOption);
                         }
                         catch (Exception ex)
                         {
@@ -374,7 +459,7 @@ namespace ChromeVehicleDescriptions
                     foreach (var techspec in vehicleDescription.result.techSpecs)
                     {
                         try
-                        { 
+                        {
                             var techSpecData = new TechSpecData();
 
                             techSpecData.Description = techspec.description;
@@ -412,6 +497,9 @@ namespace ChromeVehicleDescriptions
                         }
                     }
                 }
+
+            }
+
             }
 
             return vehicleDataModel;

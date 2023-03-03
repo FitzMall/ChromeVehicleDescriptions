@@ -11,10 +11,18 @@ namespace ChromeVehicleDescriptions.Business
         public static List<InStockVehicle> GetInStockVehicles()
         {
             //var results = SqlMapperUtil.SqlWithParams<InStockVehicle>("Select V_Vin as VIN, v_Stock as StockNumber, V_xrefid as XrefId from fitzway.dbo.AllInventoryFM where v_vin <> 'XX' and v_vin not in (Select VIN from ChromeDataCVD.dbo.Vehicle)", "", "JJFServer");
-            //var results = SqlMapperUtil.SqlWithParams<InStockVehicle>("Select vin as VIN, stk as StockNumber, '' as XrefId from Junk.dbo.csv_vehicleused where (vin <> 'XX' and vin <> '') and (status = 1 or status = 2 or status = 4) and vin not in (Select VIN from ChromeDataCVD.dbo.Vehicle)", "", "JJFServer");
-            var results = SqlMapperUtil.SqlWithParams<InStockVehicle>("Select vin as VIN, stk_no as StockNumber, '' as XrefId from Junk.dbo.csv_vehiclenew where (vin <> 'XX' and vin <> '') and status <> 26 and vin not in (Select VIN from ChromeDataCVD.dbo.Vehicle)", "", "JJFServer");
+            var results = SqlMapperUtil.SqlWithParams<InStockVehicle>("Select vin as VIN, stk as StockNumber, '' as XrefId, 'USED' as Condition from Junk.dbo.csv_vehicleused where (vin <> 'XX' and vin <> '') and (status = 1 or status = 2 or status = 4) and vin not in (Select VIN from ChromeDataCVD.dbo.Vehicle)", "", "JJFServer");
+            var resultsNew = SqlMapperUtil.SqlWithParams<InStockVehicle>("Select vin as VIN, stk_no as StockNumber, '' as XrefId, 'NEW' as Condition from Junk.dbo.csv_vehiclenew where (vin <> 'XX' and vin <> '') and status <> 26 and vin not in (Select VIN from ChromeDataCVD.dbo.Vehicle)", "", "JJFServer");
 
+            results.AddRange(resultsNew);
+            return results;
+        }
+
+        public static int UpdateVehicleTable()
+        {
             
+            var results = SqlMapperUtil.InsertUpdateOrDeleteStoredProc("sp_UpdateChromeVehicleTable", null, "JJFServer");
+
             return results;
         }
         public static bool CheckStyle(int styleId)
@@ -230,10 +238,10 @@ namespace ChromeVehicleDescriptions.Business
 
         }
 
-        public static void AddVehicleOptionMapping(int vehicleId, int optionId)
+        public static void AddVehicleOptionMapping(int vehicleId, int optionId, int showOption)
         {
 
-            var result = SqlMapperUtil.InsertUpdateOrDeleteStoredProc("sp_InsertVehicleOptionMapping", new { VehicleId = vehicleId, OptionId = optionId }, "JJFServer");
+            var result = SqlMapperUtil.InsertUpdateOrDeleteStoredProc("sp_InsertVehicleOptionMapping", new { VehicleId = vehicleId, OptionId = optionId, ShowOption = showOption }, "JJFServer");
 
         }
 

@@ -9,3 +9,7 @@ C:\_Projects\ChromeVehicleDescriptions\ChromeVehicleDescriptions\bin\Debug\Syste
 C:\_Projects\ChromeVehicleDescriptions\ChromeVehicleDescriptions\obj\Debug\ChromeVehicleDescriptions.csprojResolveAssemblyReference.cache
 C:\_Projects\ChromeVehicleDescriptions\ChromeVehicleDescriptions\obj\Debug\ChromeVehicleDescriptions.exe
 C:\_Projects\ChromeVehicleDescriptions\ChromeVehicleDescriptions\obj\Debug\ChromeVehicleDescriptions.pdb
+C:\_Projects\ChromeVehicleDescriptions\ChromeVehicleDescriptions\bin\Debug\ChromeVehicleDescriptions.exe.manifest
+C:\_Projects\ChromeVehicleDescriptions\ChromeVehicleDescriptions\bin\Debug\ChromeVehicleDescriptions.application
+C:\_Projects\ChromeVehicleDescriptions\ChromeVehicleDescriptions\obj\Debug\ChromeVehicleDescriptions.exe.manifest
+C:\_Projects\ChromeVehicleDescriptions\ChromeVehicleDescriptions\obj\Debug\ChromeVehicleDescriptions.application

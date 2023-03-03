@@ -11,6 +11,7 @@ namespace ChromeVehicleDescriptions.Models
         public string VIN { get; set; }
         public string StockNumber { get; set; }
         public string XrefId { get; set; }
+        public string Condition { get; set; }
     }
 
     public class ChromeVehicleDescriptionModel
