@@ -21,7 +21,7 @@ namespace ChromeVehicleDescriptions
                     index += 1;
                     Console.WriteLine("Vehicle " + index + " of " + vehicles.Count());
 
-                    var vehicleId = SQLQueries.CheckVehicle(vehicle.VIN);
+                    var vehicleId = SQLQueries.CheckVehicle(vehicle.VIN,vehicle.StockNumber);
 
                     if (vehicleId == 0)
                     {
@@ -149,7 +149,7 @@ namespace ChromeVehicleDescriptions
                 if (styleData.StyleId > 0)
                 { 
                 //MAP AND ADD EXTERIOR COLOR
-                if (vehicleDescription.result.exteriorColors != null && vehicleDescription.result.exteriorColors.Count() > 0)
+                if (vehicleDescription.result.exteriorColors != null && vehicleDescription.result.exteriorColors.Count() == 1)
                 {
                     try
                     {
@@ -167,7 +167,7 @@ namespace ChromeVehicleDescriptions
 
                         exteriorColorData.Type = vehicleDescription.result.exteriorColors.First().type;
 
-                        vehicleData.ExteriorColorId = SQLQueries.AddExteriorColor(exteriorColorData);
+                        //vehicleData.ExteriorColorId = SQLQueries.AddExteriorColor(exteriorColorData);
 
                         //Check to see if the color exists
                         var colorCodeId = SQLQueries.CheckExteriorColor(exteriorColorData.ColorCode, styleData.StyleId);
@@ -184,8 +184,51 @@ namespace ChromeVehicleDescriptions
                         var x = ex.Message;
                     }
                 }
-                //MAP AND ADD INTERIOR COLOR
-                if (vehicleDescription.result.interiorColors != null && vehicleDescription.result.interiorColors.Count() > 0)
+                else if (vehicleDescription.result.exteriorColors != null && vehicleDescription.result.exteriorColors.Count() > 1)
+                    {
+                        try
+                        {
+
+                            foreach(var color in vehicleDescription.result.exteriorColors)
+                            {
+                                var tempColorData = new ExteriorColorData();
+
+                                tempColorData.ColorCode = color.colorCode;
+                                tempColorData.Description = color.description;
+                                tempColorData.GenericDescription = color.genericDesc;
+                                tempColorData.InstallCause = color.installCause;
+                                tempColorData.Primary = color.primary;
+                                tempColorData.RGBHexValue = color.rgbHexValue;
+                                tempColorData.RGBValue = color.rgbValue;
+                                if (color.styles.Length > 0)
+                                {
+                                    tempColorData.StyleId = color.styles[0];
+                                }
+
+                                tempColorData.Type = color.type;
+
+                                //var exteriorColorId = SQLQueries.AddExteriorColor(tempColorData);
+                                var colorId = 0;
+                                //Check to see if the color exists
+                                var colorCodeId = SQLQueries.CheckExteriorColor(exteriorColorData.ColorCode, styleData.StyleId);
+                                if (colorCodeId > 0)
+                                    colorId = colorCodeId;
+                                else
+                                {
+                                    // Color does not exist, add it
+                                    colorId = SQLQueries.AddExteriorColor(exteriorColorData);
+                                }
+                            }
+
+
+                        }
+                        catch (Exception ex)
+                        {
+                            var x = ex.Message;
+                        }
+                    }
+                    //MAP AND ADD INTERIOR COLOR
+                    if (vehicleDescription.result.interiorColors != null && vehicleDescription.result.interiorColors.Count() > 0)
                 {
                     try
                     {
@@ -198,7 +241,7 @@ namespace ChromeVehicleDescriptions
                             interiorColorData.StyleId = vehicleDescription.result.interiorColors.First().styles[0];
                         }
 
-                        vehicleData.InteriorColorId = SQLQueries.AddInteriorColor(interiorColorData);
+                        //vehicleData.InteriorColorId = SQLQueries.AddInteriorColor(interiorColorData);
 
                         //Check to see if the color exists
                         var colorCodeId = SQLQueries.CheckInteriorColor(interiorColorData.ColorCode, styleData.StyleId);
@@ -256,7 +299,7 @@ namespace ChromeVehicleDescriptions
 
                     //vehicleData.Id = SQLQueries.AddVehicle(vehicleData);
                     // Check to see if the vehicle exists
-                    var vehicleId = SQLQueries.CheckVehicle(vehicleData.VIN);
+                    var vehicleId = SQLQueries.CheckVehicle(vehicleData.VIN,vehicleData.StockNumber);
                     if (vehicleId > 0)
                         vehicleData.Id = vehicleId;
                     else

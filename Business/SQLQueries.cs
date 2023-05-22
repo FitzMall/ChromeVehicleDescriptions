@@ -11,8 +11,8 @@ namespace ChromeVehicleDescriptions.Business
         public static List<InStockVehicle> GetInStockVehicles()
         {
             //var results = SqlMapperUtil.SqlWithParams<InStockVehicle>("Select V_Vin as VIN, v_Stock as StockNumber, V_xrefid as XrefId from fitzway.dbo.AllInventoryFM where v_vin <> 'XX' and v_vin not in (Select VIN from ChromeDataCVD.dbo.Vehicle)", "", "JJFServer");
-            var results = SqlMapperUtil.SqlWithParams<InStockVehicle>("Select vin as VIN, stk as StockNumber, '' as XrefId, 'USED' as Condition from Junk.dbo.csv_vehicleused where (vin <> 'XX' and vin <> '') and (status = 1 or status = 2 or status = 4) and vin not in (Select VIN from ChromeDataCVD.dbo.Vehicle)", "", "JJFServer");
-            var resultsNew = SqlMapperUtil.SqlWithParams<InStockVehicle>("Select vin as VIN, stk_no as StockNumber, '' as XrefId, 'NEW' as Condition from Junk.dbo.csv_vehiclenew where (vin <> 'XX' and vin <> '') and status <> 26 and vin not in (Select VIN from ChromeDataCVD.dbo.Vehicle)", "", "JJFServer");
+            var results = SqlMapperUtil.SqlWithParams<InStockVehicle>("Select vin as VIN, stk as StockNumber, '' as XrefId, 'USED' as Condition, color as ExteriorColor from Junk.dbo.csv_vehicleused where (vin <> 'XX' and vin <> '') and (status = 1 or status = 2 or status = 4) and stk not in (Select StockNumber from ChromeDataCVD.dbo.Vehicle)", "", "JJFServer");
+            var resultsNew = SqlMapperUtil.SqlWithParams<InStockVehicle>("Select vin as VIN, stk_no as StockNumber, '' as XrefId, 'NEW' as Condition, clr_code as ExteriorColor from Junk.dbo.csv_vehiclenew where (vin <> 'XX' and vin <> '') and status <> 26 and stk_no not in (Select StockNumber from ChromeDataCVD.dbo.Vehicle)", "", "JJFServer");
 
             results.AddRange(resultsNew);
             return results;
@@ -131,7 +131,7 @@ namespace ChromeVehicleDescriptions.Business
 
         }
 
-        public static int CheckVehicle(string vin)
+        public static int CheckVehicle(string vin, string stock)
         {
             var vehicleId = 0;
 
@@ -139,13 +139,33 @@ namespace ChromeVehicleDescriptions.Business
 
             if (results != null && results.Count > 0)
             {
-                vehicleId = results[0].Id;
+                var vehicle = results[0];
+                vehicleId = vehicle.Id;
+
+                if(vehicle.StockNumber.Trim() != stock.Trim())
+                {
+                    //update vehicle
+                    vehicle.StockNumber = stock;
+                    //vehicle.VehicleLocation = location;
+
+                    UpdateVehicle(vehicle);
+                }
             }
 
             return vehicleId;
 
         }
 
+        public static int UpdateVehicle(VehicleData vehicleData)
+        {
+            var vehicleId = 0;
+
+            var result = SqlMapperUtil.InsertUpdateOrDeleteStoredProc("sp_UpdateVehicle", vehicleData, "JJFServer");
+
+
+            return vehicleId;
+
+        }
         public static int AddStyle(StyleData styleData)
         {
             var styleKeyId = 0;
@@ -181,7 +201,7 @@ namespace ChromeVehicleDescriptions.Business
             var vehicleId = 0;
 
             var result = SqlMapperUtil.InsertUpdateOrDeleteStoredProc("sp_InsertVehicle", vehicleData, "JJFServer");
-            vehicleId = CheckVehicle(vehicleData.VIN);
+            vehicleId = CheckVehicle(vehicleData.VIN,vehicleData.StockNumber);
 
             return vehicleId;
 

@@ -12,6 +12,7 @@ namespace ChromeVehicleDescriptions.Models
         public string StockNumber { get; set; }
         public string XrefId { get; set; }
         public string Condition { get; set; }
+        public string ExteriorColor { get; set; }
     }
 
     public class ChromeVehicleDescriptionModel
