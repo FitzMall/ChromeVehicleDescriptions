@@ -26,7 +26,14 @@ namespace ChromeVehicleDescriptions
                     if (vehicleId == 0)
                     {
                         var vehicleDescription = ChromeVehicleDescriptions.Business.APIHelper.GetVehicleDescription(vehicle.VIN);
-                        AddVehicle(vehicleDescription, vehicle.StockNumber, vehicle.XrefId, vehicle.Condition);
+                        try
+                        {
+                            AddVehicle(vehicleDescription, vehicle.StockNumber, vehicle.XrefId, vehicle.Condition);
+                        }
+                        catch(Exception ex)
+                        {
+                            var y = ex.Message;
+                        }
                     }
                 }
 
