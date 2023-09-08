@@ -23,8 +23,8 @@ namespace ChromeVehicleDescriptions
 
                     var vehicleId = SQLQueries.CheckVehicle(vehicle.VIN,vehicle.StockNumber);
 
-                    if (vehicleId == 0)
-                    {
+                    //if (vehicleId == 0)
+                    //{
                         var vehicleDescription = ChromeVehicleDescriptions.Business.APIHelper.GetVehicleDescription(vehicle.VIN);
                         try
                         {
@@ -34,7 +34,7 @@ namespace ChromeVehicleDescriptions
                         {
                             var y = ex.Message;
                         }
-                    }
+                    //}
                 }
 
                 //var vehicleDescription = ChromeVehicleDescriptions.Business.APIHelper.GetVehicleDescription("1G6AU5S8XE0143881");
@@ -355,7 +355,7 @@ namespace ChromeVehicleDescriptions
                             featureData.SubSectionId = feature.subSectionId;
 
                             // Check to see if the feature exists
-                            var featureId = SQLQueries.CheckFeature(featureData.FeatureId, featureData.Key);
+                            var featureId = SQLQueries.CheckFeature(featureData.FeatureId, featureData.Key, featureData.StyleId);
                             if (featureId > 0)
                                 featureData.Id = featureId;
                             else
@@ -421,7 +421,7 @@ namespace ChromeVehicleDescriptions
                             }
 
 
-                            SQLQueries.AddVehiclePackageMapping(vehicleData.Id, packageData.Id);
+                            //SQLQueries.AddVehiclePackageMapping(vehicleData.Id, packageData.Id);
                         }
                         catch (Exception ex)
                         {
@@ -495,7 +495,7 @@ namespace ChromeVehicleDescriptions
                                 optionData.Id = SQLQueries.AddOption(optionData);
                             }
 
-                            SQLQueries.AddVehicleOptionMapping(vehicleData.Id, optionData.Id, showOption);
+                            //SQLQueries.AddVehicleOptionMapping(vehicleData.Id, optionData.Id, showOption);
                         }
                         catch (Exception ex)
                         {
@@ -530,7 +530,7 @@ namespace ChromeVehicleDescriptions
                             techSpecData.SubSectionId = techspec.subSectionId;
 
                             // Check to see if the feature exists
-                            var techSpecId = SQLQueries.CheckTechSpec(techSpecData.TechSpecId, techSpecData.Key);
+                            var techSpecId = SQLQueries.CheckTechSpec(techSpecData.TechSpecId, techSpecData.Key, techSpecData.StyleId);
                             if (techSpecId > 0)
                                 techSpecData.Id = techSpecId;
                             else

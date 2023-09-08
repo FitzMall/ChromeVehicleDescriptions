@@ -11,8 +11,8 @@ namespace ChromeVehicleDescriptions.Business
         public static List<InStockVehicle> GetInStockVehicles()
         {
             //var results = SqlMapperUtil.SqlWithParams<InStockVehicle>("Select V_Vin as VIN, v_Stock as StockNumber, V_xrefid as XrefId from fitzway.dbo.AllInventoryFM where v_vin <> 'XX' and v_vin not in (Select VIN from ChromeDataCVD.dbo.Vehicle)", "", "JJFServer");
-            var results = SqlMapperUtil.SqlWithParams<InStockVehicle>("Select vin as VIN, stk as StockNumber, '' as XrefId, 'USED' as Condition, color as ExteriorColor from Junk.dbo.csv_vehicleused where (vin <> 'XX' and vin <> '') and (status = 1 or status = 2 or status = 4) and stk not in (Select StockNumber from ChromeDataCVD.dbo.Vehicle)", "", "JJFServer");
-            var resultsNew = SqlMapperUtil.SqlWithParams<InStockVehicle>("Select vin as VIN, stk_no as StockNumber, '' as XrefId, 'NEW' as Condition, clr_code as ExteriorColor from Junk.dbo.csv_vehiclenew where (vin <> 'XX' and vin <> '') and status <> 26 and stk_no not in (Select StockNumber from ChromeDataCVD.dbo.Vehicle)", "", "JJFServer");
+            var results = SqlMapperUtil.SqlWithParams<InStockVehicle>("Select vin as VIN, stk as StockNumber, '' as XrefId, 'USED' as Condition, color as ExteriorColor from Junk.dbo.csv_vehicleused where (vin <> 'XX' and vin <> '') and (status = 1 or status = 2 or status = 4) and stk not in (Select StockNumber from ChromeDataCVD.dbo.Vehicle) ", "", "JJFServer"); //and stk not in (Select StockNumber from ChromeDataCVD.dbo.Vehicle)
+            var resultsNew = SqlMapperUtil.SqlWithParams<InStockVehicle>("Select vin as VIN, stk_no as StockNumber, '' as XrefId, 'NEW' as Condition, clr_code as ExteriorColor from Junk.dbo.csv_vehiclenew where (vin <> 'XX' and vin <> '') and status <> 26 and stk_no not in (Select StockNumber from ChromeDataCVD.dbo.Vehicle)", "", "JJFServer");  //and stk_no not in (Select StockNumber from ChromeDataCVD.dbo.Vehicle)
 
             results.AddRange(resultsNew);
             return results;
@@ -71,11 +71,11 @@ namespace ChromeVehicleDescriptions.Business
 
         }
 
-        public static int CheckFeature(int Id, string key)
+        public static int CheckFeature(int Id, string key, int styleId)
         {
             var featureId = 0;
 
-            var results = SqlMapperUtil.StoredProcWithParams<FeatureData>("sp_GetFeature", new { FeatureId = Id, Key = key }, "JJFServer");
+            var results = SqlMapperUtil.StoredProcWithParams<FeatureData>("sp_GetFeature", new { FeatureId = Id, Key = key, StyleId = styleId }, "JJFServer");
 
             if (results != null && results.Count > 0)
             {
@@ -116,11 +116,11 @@ namespace ChromeVehicleDescriptions.Business
 
         }
 
-        public static int CheckTechSpec(int Id, string key)
+        public static int CheckTechSpec(int Id, string key, int styleId)
         {
             var techSpecId = 0;
 
-            var results = SqlMapperUtil.StoredProcWithParams<TechSpecData>("sp_GetTechSpec", new { TechSpecId = Id, Key = key }, "JJFServer");
+            var results = SqlMapperUtil.StoredProcWithParams<TechSpecData>("sp_GetTechSpec", new { TechSpecId = Id, Key = key, StyleId = styleId }, "JJFServer");
 
             if (results != null && results.Count > 0)
             {
@@ -212,7 +212,7 @@ namespace ChromeVehicleDescriptions.Business
             var featureId = 0;
 
             var result = SqlMapperUtil.InsertUpdateOrDeleteStoredProc("sp_InsertFeature", featureData, "JJFServer");
-            featureId = CheckFeature(featureData.FeatureId, featureData.Key);
+            featureId = CheckFeature(featureData.FeatureId, featureData.Key, featureData.StyleId);
 
             return featureId;
 
@@ -245,7 +245,7 @@ namespace ChromeVehicleDescriptions.Business
             var techSpecId = 0;
 
             var result = SqlMapperUtil.InsertUpdateOrDeleteStoredProc("sp_InsertTechSpec", techSpecData, "JJFServer");
-            techSpecId = CheckTechSpec(techSpecData.TechSpecId, techSpecData.Key);
+            techSpecId = CheckTechSpec(techSpecData.TechSpecId, techSpecData.Key, techSpecData.StyleId);
 
             return techSpecId;
 
