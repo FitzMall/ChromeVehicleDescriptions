@@ -101,11 +101,11 @@ namespace ChromeVehicleDescriptions.Business
 
         }
 
-        public static int CheckPackage(int Id, string key)
+        public static int CheckPackage(int Id, string key, int styleId)
         {
             var packageId = 0;
 
-            var results = SqlMapperUtil.StoredProcWithParams<PackageData>("sp_GetPackage", new { PackageId = Id, Key = key }, "JJFServer");
+            var results = SqlMapperUtil.StoredProcWithParams<PackageData>("sp_GetPackage", new { PackageId = Id, Key = key, StyleId = styleId }, "JJFServer");
 
             if (results != null && results.Count > 0)
             {
@@ -234,7 +234,7 @@ namespace ChromeVehicleDescriptions.Business
             var packageId = 0;
 
             var result = SqlMapperUtil.InsertUpdateOrDeleteStoredProc("sp_InsertPackage", packageData, "JJFServer");
-            packageId = CheckPackage(packageData.PackageId, packageData.Key);
+            packageId = CheckPackage(packageData.PackageId, packageData.Key,packageData.StyleId);
 
             return packageId;
 

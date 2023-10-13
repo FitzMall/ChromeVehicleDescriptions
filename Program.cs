@@ -96,11 +96,11 @@ namespace ChromeVehicleDescriptions
                         //SQLQueries.AddStyle(styleData);
 
                         //Check to see if the style exists
-                        if (!SQLQueries.CheckStyle(styleData.StyleId))
-                        {
+                        //if (!SQLQueries.CheckStyle(styleData.StyleId))
+                        //{
                             // Style does not exist, add it
                             SQLQueries.AddStyle(styleData);
-                        }
+                        //}
                     }
                     catch (Exception ex)
                     {
@@ -136,11 +136,11 @@ namespace ChromeVehicleDescriptions
                             //SQLQueries.AddStyle(styleData);
 
                             //Check to see if the style exists
-                            if (!SQLQueries.CheckStyle(styleData.StyleId))
-                            {
+                            //if (!SQLQueries.CheckStyle(styleData.StyleId))
+                            //{
                                 // Style does not exist, add it
                                 SQLQueries.AddStyle(styleData);
-                            }
+                            //}
                         }
 
                         //We don't know which one, so reset this
@@ -177,14 +177,14 @@ namespace ChromeVehicleDescriptions
                         //vehicleData.ExteriorColorId = SQLQueries.AddExteriorColor(exteriorColorData);
 
                         //Check to see if the color exists
-                        var colorCodeId = SQLQueries.CheckExteriorColor(exteriorColorData.ColorCode, styleData.StyleId);
-                        if (colorCodeId > 0)
-                            vehicleData.ExteriorColorId = colorCodeId;
-                        else
-                        {
+                        //var colorCodeId = SQLQueries.CheckExteriorColor(exteriorColorData.ColorCode, styleData.StyleId);
+                        //if (colorCodeId > 0)
+                        //    vehicleData.ExteriorColorId = colorCodeId;
+                        //else
+                        //{
                             // Color does not exist, add it
                             vehicleData.ExteriorColorId = SQLQueries.AddExteriorColor(exteriorColorData);
-                        }
+                        //}
                     }
                     catch (Exception ex)
                     {
@@ -217,10 +217,10 @@ namespace ChromeVehicleDescriptions
                                 //var exteriorColorId = SQLQueries.AddExteriorColor(tempColorData);
                                 var colorId = 0;
                                 //Check to see if the color exists
-                                var colorCodeId = SQLQueries.CheckExteriorColor(exteriorColorData.ColorCode, styleData.StyleId);
-                                if (colorCodeId > 0)
-                                    colorId = colorCodeId;
-                                else
+                                //var colorCodeId = SQLQueries.CheckExteriorColor(exteriorColorData.ColorCode, styleData.StyleId);
+                                //if (colorCodeId > 0)
+                                //    colorId = colorCodeId;
+                                //else
                                 {
                                     // Color does not exist, add it
                                     colorId = SQLQueries.AddExteriorColor(exteriorColorData);
@@ -251,15 +251,15 @@ namespace ChromeVehicleDescriptions
                         //vehicleData.InteriorColorId = SQLQueries.AddInteriorColor(interiorColorData);
 
                         //Check to see if the color exists
-                        var colorCodeId = SQLQueries.CheckInteriorColor(interiorColorData.ColorCode, styleData.StyleId);
-                        if (colorCodeId > 0)
-                            vehicleData.InteriorColorId = colorCodeId;
-                        else
-                        {
+                        //var colorCodeId = SQLQueries.CheckInteriorColor(interiorColorData.ColorCode, styleData.StyleId);
+                        //if (colorCodeId > 0)
+                        //    vehicleData.InteriorColorId = colorCodeId;
+                        //else
+                        //{
                             // Color does not exist, add it
                             vehicleData.InteriorColorId = SQLQueries.AddInteriorColor(interiorColorData);
 
-                        }
+                        //}
                     }
                     catch (Exception ex)
                     {
@@ -306,15 +306,15 @@ namespace ChromeVehicleDescriptions
 
                     //vehicleData.Id = SQLQueries.AddVehicle(vehicleData);
                     // Check to see if the vehicle exists
-                    var vehicleId = SQLQueries.CheckVehicle(vehicleData.VIN,vehicleData.StockNumber);
-                    if (vehicleId > 0)
-                        vehicleData.Id = vehicleId;
-                    else
-                    {
+                    //var vehicleId = SQLQueries.CheckVehicle(vehicleData.VIN,vehicleData.StockNumber);
+                    //if (vehicleId > 0)
+                    //    vehicleData.Id = vehicleId;
+                    //else
+                    //{
                         // Vehicle does not exist, add it
                         vehicleData.Id = SQLQueries.AddVehicle(vehicleData);
 
-                    }
+                    //}
                 }
                 catch (Exception ex)
                 {
@@ -355,14 +355,14 @@ namespace ChromeVehicleDescriptions
                             featureData.SubSectionId = feature.subSectionId;
 
                             // Check to see if the feature exists
-                            var featureId = SQLQueries.CheckFeature(featureData.FeatureId, featureData.Key, featureData.StyleId);
-                            if (featureId > 0)
-                                featureData.Id = featureId;
-                            else
-                            {
+                            //var featureId = SQLQueries.CheckFeature(featureData.FeatureId, featureData.Key, featureData.StyleId);
+                            //if (featureId > 0)
+                            //    featureData.Id = featureId;
+                            //else
+                            //{
                                 // Feature does not exist, add it
                                 featureData.Id = SQLQueries.AddFeature(featureData);
-                            }
+                            //}
 
                             SQLQueries.AddVehicleFeatureMapping(vehicleData.Id, featureData.Id);
                         }
@@ -411,17 +411,17 @@ namespace ChromeVehicleDescriptions
                             packageData.IsStandard = package.styles.First().isStandard;
 
                             // Check to see if the feature exists
-                            var packageId = SQLQueries.CheckPackage(packageData.PackageId, packageData.Key);
-                            if (packageId > 0)
-                                packageData.Id = packageId;
-                            else
-                            {
+                            //var packageId = SQLQueries.CheckPackage(packageData.PackageId, packageData.Key, packageData.StyleId);
+                            //if (packageId > 0)
+                            //    packageData.Id = packageId;
+                            //else
+                            //{
                                 // Feature does not exist, add it
                                 packageData.Id = SQLQueries.AddPackage(packageData);
-                            }
+                            //}
 
 
-                            //SQLQueries.AddVehiclePackageMapping(vehicleData.Id, packageData.Id);
+                            SQLQueries.AddVehiclePackageMapping(vehicleData.Id, packageData.Id);
                         }
                         catch (Exception ex)
                         {
@@ -486,16 +486,16 @@ namespace ChromeVehicleDescriptions
                             }
 
                             // Check to see if the feature exists
-                            var optionId = SQLQueries.CheckOption(optionData.OptionCode, optionData.StyleId);
-                            if (optionId > 0)
-                                optionData.Id = optionId;
-                            else
-                            {
+                            //var optionId = SQLQueries.CheckOption(optionData.OptionCode, optionData.StyleId);
+                            //if (optionId > 0)
+                            //    optionData.Id = optionId;
+                            //else
+                            //{
                                 // Feature does not exist, add it
                                 optionData.Id = SQLQueries.AddOption(optionData);
-                            }
+                            //}
 
-                            //SQLQueries.AddVehicleOptionMapping(vehicleData.Id, optionData.Id, showOption);
+                            SQLQueries.AddVehicleOptionMapping(vehicleData.Id, optionData.Id, showOption);
                         }
                         catch (Exception ex)
                         {
@@ -530,14 +530,14 @@ namespace ChromeVehicleDescriptions
                             techSpecData.SubSectionId = techspec.subSectionId;
 
                             // Check to see if the feature exists
-                            var techSpecId = SQLQueries.CheckTechSpec(techSpecData.TechSpecId, techSpecData.Key, techSpecData.StyleId);
-                            if (techSpecId > 0)
-                                techSpecData.Id = techSpecId;
-                            else
-                            {
+                            //var techSpecId = SQLQueries.CheckTechSpec(techSpecData.TechSpecId, techSpecData.Key, techSpecData.StyleId);
+                            //if (techSpecId > 0)
+                            //    techSpecData.Id = techSpecId;
+                            //else
+                           // {
                                 // Feature does not exist, add it
                                 techSpecData.Id = SQLQueries.AddTechSpec(techSpecData);
-                            }
+                            //}
 
                             SQLQueries.AddVehicleTechSpecMapping(vehicleData.Id, techSpecData.Id);
                         }
