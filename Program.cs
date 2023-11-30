@@ -167,11 +167,12 @@ namespace ChromeVehicleDescriptions
                         exteriorColorData.Primary = vehicleDescription.result.exteriorColors.First().primary;
                         exteriorColorData.RGBHexValue = vehicleDescription.result.exteriorColors.First().rgbHexValue;
                         exteriorColorData.RGBValue = vehicleDescription.result.exteriorColors.First().rgbValue;
-                        if (vehicleDescription.result.exteriorColors.First().styles.Length > 0)
-                        {
-                            exteriorColorData.StyleId = vehicleDescription.result.exteriorColors.First().styles[0];
-                        }
+                        //if (vehicleDescription.result.exteriorColors.First().styles.Length > 0)
+                        //{
+                        //    exteriorColorData.StyleId = vehicleDescription.result.exteriorColors.First().styles[0];
+                        //}
 
+                        exteriorColorData.StyleId = styleData.StyleId;
                         exteriorColorData.Type = vehicleDescription.result.exteriorColors.First().type;
 
                         //vehicleData.ExteriorColorId = SQLQueries.AddExteriorColor(exteriorColorData);
@@ -243,19 +244,19 @@ namespace ChromeVehicleDescriptions
                         interiorColorData.Description = vehicleDescription.result.interiorColors.First().description;
                         interiorColorData.GenericDescription = vehicleDescription.result.interiorColors.First().genericDesc;
                         interiorColorData.InstallCause = vehicleDescription.result.interiorColors.First().installCause;
-                        if (vehicleDescription.result.interiorColors.First().styles.Length > 0)
-                        {
-                            interiorColorData.StyleId = vehicleDescription.result.interiorColors.First().styles[0];
-                        }
-
+                        //if (vehicleDescription.result.interiorColors.First().styles.Length > 0)
+                        //{
+                        //    interiorColorData.StyleId = vehicleDescription.result.interiorColors.First().styles[0];
+                        //}
+                        interiorColorData.StyleId = styleData.StyleId;
                         //vehicleData.InteriorColorId = SQLQueries.AddInteriorColor(interiorColorData);
 
-                        //Check to see if the color exists
-                        //var colorCodeId = SQLQueries.CheckInteriorColor(interiorColorData.ColorCode, styleData.StyleId);
-                        //if (colorCodeId > 0)
-                        //    vehicleData.InteriorColorId = colorCodeId;
-                        //else
-                        //{
+                            //Check to see if the color exists
+                            //var colorCodeId = SQLQueries.CheckInteriorColor(interiorColorData.ColorCode, styleData.StyleId);
+                            //if (colorCodeId > 0)
+                            //    vehicleData.InteriorColorId = colorCodeId;
+                            //else
+                            //{
                             // Color does not exist, add it
                             vehicleData.InteriorColorId = SQLQueries.AddInteriorColor(interiorColorData);
 
@@ -345,10 +346,11 @@ namespace ChromeVehicleDescriptions
                             featureData.RankingValue = feature.rankingValue;
                             featureData.SectionId = feature.sectionId;
                             featureData.SectionName = feature.sectionName;
-                            if (feature.styles.First().styleIds.Length > 0)
-                            {
-                                featureData.StyleId = feature.styles.First().styleIds[0];
-                            }
+                            //if (feature.styles.First().styleIds.Length > 0)
+                            //{
+                            //    featureData.StyleId = feature.styles.First().styleIds[0];
+                            //}
+                                featureData.StyleId = styleData.StyleId;
                             featureData.InstallCause = feature.styles.First().installCause;
                             featureData.IsStandard = feature.styles.First().isStandard;
 
@@ -403,10 +405,12 @@ namespace ChromeVehicleDescriptions
                                 }
                             }
 
-                            if (package.styles.First().styleIds.Length > 0)
-                            {
-                                packageData.StyleId = package.styles.First().styleIds[0];
-                            }
+                            //if (package.styles.First().styleIds.Length > 0)
+                            //{
+                            //    packageData.StyleId = package.styles.First().styleIds[0];
+                            //}
+
+                                packageData.StyleId = styleData.StyleId;
                             packageData.InstallCause = package.styles.First().installCause;
                             packageData.IsStandard = package.styles.First().isStandard;
 
@@ -520,10 +524,11 @@ namespace ChromeVehicleDescriptions
                             techSpecData.RankingValue = techspec.rankingValue;
                             techSpecData.SectionId = techspec.sectionId;
                             techSpecData.SectionName = techspec.sectionName;
-                            if (techspec.styles.First().styleIds.Length > 0)
-                            {
-                                techSpecData.StyleId = techspec.styles.First().styleIds[0];
-                            }
+                            //if (techspec.styles.First().styleIds.Length > 0)
+                            //{
+                            //    techSpecData.StyleId = techspec.styles.First().styleIds[0];
+                            //}
+                                techSpecData.StyleId = styleData.StyleId;
                             techSpecData.InstallCause = techspec.styles.First().installCause;
                             techSpecData.IsStandard = techspec.styles.First().isStandard;
 

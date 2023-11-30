@@ -52,6 +52,8 @@ namespace ChromeVehicleDescriptions.Models
         public DateTime OptionsApprovedDate { get; set; }
         public string VehicleLocation { get; set; }
         public string FuelType { get; set; }
+        public string DealerComments { get; set;}
+        public int HasDealerOptions { get; set; }
     }
 
     public class StyleData
@@ -116,6 +118,7 @@ namespace ChromeVehicleDescriptions.Models
         public string BenefitTitle { get; set; }
         public string BenefitDefinition { get; set; }
         public string BenefitStatement { get; set; }
+        public bool ShowOption { get; set; }
     }
 
     public class PackageData
@@ -136,6 +139,7 @@ namespace ChromeVehicleDescriptions.Models
         public string OptionCode { get; set; }
         public decimal MSRP { get; set; }
         public string Content { get; set; }
+        public bool ShowOption { get; set; }
     }
 
     public class TechSpecData
@@ -156,6 +160,7 @@ namespace ChromeVehicleDescriptions.Models
         public string BenefitTitle { get; set; }
         public string BenefitDefinition { get; set; }
         public string BenefitStatement { get; set; }
+        public bool ShowOption { get; set; }
     }
 
     public class OptionData
@@ -167,6 +172,7 @@ namespace ChromeVehicleDescriptions.Models
         public string OptionDescription { get; set; }
         public string InstallCause { get; set; }
         public string Content { get; set; }
+        public bool ShowOption { get; set; }
     }
 
 }
