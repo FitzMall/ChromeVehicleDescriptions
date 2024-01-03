@@ -54,6 +54,8 @@ namespace ChromeVehicleDescriptions.Models
         public string FuelType { get; set; }
         public string DealerComments { get; set;}
         public int HasDealerOptions { get; set; }
+        public int OptionCount { get; set; }
+        public int FitzWayCheckedOut { get; set; }
     }
 
     public class StyleData

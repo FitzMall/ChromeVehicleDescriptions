@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ChromeVehicleDescriptions.exe" size="65992">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ChromeVehicleDescriptions.exe" size="66504">
       <assemblyIdentity name="ChromeVehicleDescriptions" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>P78f5gdBEMR1CnQ1gQkQG5pBJF4y2mj080pboHgWO90=</dsig:DigestValue>
+        <dsig:DigestValue>ealobD9B8RWk2fSB3nlc6EjP0MDCLnYpMvDitC7mIiM=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
